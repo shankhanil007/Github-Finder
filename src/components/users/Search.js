@@ -7,7 +7,7 @@ const Search = (props) => {
     e.preventDefault();
 
     if (text === "") {
-      alert("Please enter something", "light");
+      props.setAlert("Please enter something", "light");
     } else {
       props.searchUsers(text);
       setText("");

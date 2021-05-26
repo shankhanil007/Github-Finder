@@ -4,12 +4,16 @@ import Search from "../users/Search";
 import Users from "../users/Users";
 import Spinner from "../layout/Spinner";
 
-const Home = () => {
+const Home = (props) => {
   const githubClientId = process.env.GITHUB_CLIENT_ID;
   const githubClientSecret = process.env.GITHUB_CLIENT_SECRET;
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const specifyAlert = (msg, type) => {
+    props.setAlertAppJS(msg, type);
+  };
 
   const searchUsers = async (text) => {
     setLoading(true);
@@ -29,7 +33,7 @@ const Home = () => {
 
   return (
     <Fragment>
-      <Search searchUsers={searchUsers} />
+      <Search searchUsers={searchUsers} setAlert={specifyAlert} />
       <Users users={users} clearUsers={clearUsers} />
     </Fragment>
   );
