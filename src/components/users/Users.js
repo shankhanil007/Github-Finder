@@ -3,11 +3,18 @@ import UserItem from "./UserItem";
 
 const Users = (props) => {
   return (
-    <div style={userStyle}>
-      {props.users.map((user) => (
-        <UserItem key={user.id} user={user} />
-      ))}
-    </div>
+    <>
+      {props.users.length > 0 && (
+        <button className="btn btn-light btn-block" onClick={props.clearUsers}>
+          Clear
+        </button>
+      )}
+      <div style={userStyle}>
+        {props.users.map((user) => (
+          <UserItem key={user.id} user={user} />
+        ))}
+      </div>
+    </>
   );
 };
 

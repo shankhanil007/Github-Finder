@@ -16,10 +16,14 @@ const Home = () => {
     setUsers(res.data.items);
   };
 
+  const clearUsers = () => {
+    setUsers([]);
+  };
+
   return (
     <Fragment>
       <Search searchUsers={searchUsers} />
-      <Users users={users} />
+      <Users users={users} clearUsers={clearUsers} />
     </Fragment>
   );
 };
