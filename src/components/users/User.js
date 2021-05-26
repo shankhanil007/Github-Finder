@@ -1,15 +1,18 @@
 import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Repos from "../repos/Repos";
 
 const User = ({ match }) => {
   const githubClientId = process.env.GITHUB_CLIENT_ID;
   const githubClientSecret = process.env.GITHUB_CLIENT_SECRET;
 
   const [user, setUser] = useState({});
+  const [repos, setRepos] = useState([]);
 
   useEffect(() => {
     getUser(match.params.login);
+    getUserRepos(match.params.login);
   }, []);
 
   const getUser = async (username) => {
@@ -17,6 +20,13 @@ const User = ({ match }) => {
       `https://api.github.com/users/${username}?client_id=${githubClientId}&client_secret=${githubClientSecret}`
     );
     setUser(res.data);
+  };
+
+  const getUserRepos = async (username) => {
+    const res = await axios.get(
+      `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${githubClientId}&client_secret=${githubClientSecret}`
+    );
+    setRepos(res.data);
   };
 
   const {
@@ -100,6 +110,7 @@ const User = ({ match }) => {
         <div className="badge badge-light">Public Repos: {public_repos}</div>
         <div className="badge badge-dark">Public Gists: {public_gists}</div>
       </div>
+      <Repos repos={repos} />
     </Fragment>
   );
 };
