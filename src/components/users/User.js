@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import Repos from "../repos/Repos";
+import Spinner from "../layout/Spinner";
 
 const User = ({ match }) => {
   const githubClientId = process.env.GITHUB_CLIENT_ID;
@@ -9,6 +10,7 @@ const User = ({ match }) => {
 
   const [user, setUser] = useState({});
   const [repos, setRepos] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     getUser(match.params.login);
@@ -16,17 +18,23 @@ const User = ({ match }) => {
   }, []);
 
   const getUser = async (username) => {
+    setLoading(true);
+
     const res = await axios.get(
       `https://api.github.com/users/${username}?client_id=${githubClientId}&client_secret=${githubClientSecret}`
     );
     setUser(res.data);
+    setLoading(false);
   };
 
   const getUserRepos = async (username) => {
+    setLoading(true);
+
     const res = await axios.get(
       `https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${githubClientId}&client_secret=${githubClientSecret}`
     );
     setRepos(res.data);
+    setLoading(false);
   };
 
   const {
@@ -44,6 +52,8 @@ const User = ({ match }) => {
     public_gists,
     hireable,
   } = user;
+
+  if (loading) return <Spinner />;
 
   return (
     <Fragment>
