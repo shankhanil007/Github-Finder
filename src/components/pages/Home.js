@@ -4,7 +4,7 @@ import Search from "../users/Search";
 
 const Home = () => (
   <Fragment>
-    <Search />
+    <Search searchUsers={searchUsers} />
   </Fragment>
 );
 
